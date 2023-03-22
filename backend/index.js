@@ -4,6 +4,8 @@ const body_parser = require('body-parser');
 const express = require('express');
 const http_status = require('http-status');
 const path = require('path');
+const relations = require('./relations');
+const connection = require('./config/sequelize');
 
 const app = express();
 
@@ -38,9 +40,13 @@ const errorHandler = (err,req,res,next) => {
 // routers
 
 
+
 // use the error handler
 
 app.use(errorHandler);
 
+connection.authenticate()
+    .then(() => app.listen(8080, () => console.log('connected')))
+    .catch(err => console.log(err));
 
-app.listen(8080, () => console.log('connected'));
+
