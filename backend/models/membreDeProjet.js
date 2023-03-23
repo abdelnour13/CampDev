@@ -45,11 +45,11 @@ const MembreDeProjet = sequelize.define('membres_de_projet', {
     },
     etablissement: {
         allowNull: false,
-        type: DataTypes.STRING(40)
+        type: DataTypes.STRING(100)
     },
     departement: {
         allowNull: false,
-        type: DataTypes.STRING(40)
+        type: DataTypes.STRING(100)
     }
 },{ timestamps: true });
 
