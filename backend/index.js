@@ -39,13 +39,18 @@ const errorHandler = (err,req,res,next) => {
 
 // routers
 
+const authRouter = require('./routes/auth');
+const adminRouter = require('./routes/admin');
 
+app.use('/v1/auth/', authRouter);
+app.use('/v1/admin/', adminRouter);
+app.get('/', (req,res,next) => res.send('hi'));
 
 // use the error handler
 
 app.use(errorHandler);
 
-connection.authenticate()
+connection.authenticate({ alter:true })
     .then(() => app.listen(8080, () => console.log('connected')))
     .catch(err => console.log(err));
 

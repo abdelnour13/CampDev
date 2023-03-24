@@ -3,23 +3,23 @@ const Role = require('./models/role');
 const Permission = require('./models/permission');
 const Compte = require('./models/compte');
 const MembreDeProjet = require('./models/membreDeProjet');
-const UtilisateurRole = require('./models/UtilisateurRole');
+const CompteRole = require('./models/CompteRole');
 const RolePermission = require('./models/RolePermission');
 
 
 
-Utilisateur.roles = Utilisateur.belongsToMany(Role, {
-    through: UtilisateurRole,
+Compte.roles = Compte.belongsToMany(Role, {
+    through: CompteRole,
     foreignKeyConstraint: true,
-    foreignKey: 'idUtilisateur',
+    foreignKey: 'idCompte',
     as: 'roles',
 });
 
-Role.utilisateurs = Role.belongsToMany(Utilisateur, {
-    through: UtilisateurRole,
+Role.comptes = Role.belongsToMany(Compte, {
+    through: CompteRole,
     foreignKeyConstraint: true,
     foreignKey: 'idRole',
-    as: 'utilisateurs',
+    as: 'compte',
 });
 
 Role.permissions = Role.belongsToMany(Permission, {
