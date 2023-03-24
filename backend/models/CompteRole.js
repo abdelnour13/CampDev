@@ -1,15 +1,15 @@
 const sequelize = require('../config/sequelize');
 
 const { DataTypes } = require('sequelize');
-const Utilisateur = require('./utilisateur');
+const Compte = require('./compte');
 const Role = require('./role');
 
-const UtilisateurRole = sequelize.define('utilisateur_role', {
-    idUtilisateur : {
+const CompteRole = sequelize.define('compte_role', {
+    idCompte : {
         type: DataTypes.INTEGER,
         references: {
-            model: Utilisateur,
-            key: 'id'
+            model: Compte,
+            key: 'idCompte'
         },
         allowNull: false,
         primaryKey: true
@@ -25,4 +25,4 @@ const UtilisateurRole = sequelize.define('utilisateur_role', {
     }
 }, {timestamps : false});
 
-module.exports = UtilisateurRole;
+module.exports = CompteRole;

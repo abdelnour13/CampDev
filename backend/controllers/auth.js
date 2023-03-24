@@ -20,7 +20,7 @@ db.inscrire = async (req,res,next) => {
             numeroTelephone
         } = req.body;
 
-        if(await Compte.findByPk(email) != null) {
+        if(await Compte.findOne({where:{email}}) != null) {
             const error = new Error('email déja utilusée');
             error.status = httpStatus.CONFLICT;
             return next(error);
@@ -45,13 +45,13 @@ db.inscrire = async (req,res,next) => {
 
         const membreDeProjet = await MembreDeProjet.create({
             ...user,
-            idCompte:compte.get('email')
+            idCompte:compte.get('idCompte')
         });
 
         await sendVerificationEmail(email,membreDeProjet.get('nom'));
 
         res.status(httpStatus.CREATED).json({
-            messge: "l'utilisateur a été créé avec succès",
+            message: "l'utilisateur a été créé avec succès",
             id:membreDeProjet.get('matricule')
         });
 
@@ -74,7 +74,11 @@ db.connecter = async (req,res,next) => {
             return next(error);
         }
 
-        const compte = await Compte.findByPk(email);
+        const compte = await Compte.findOne({
+            where: {
+                email
+            }
+        });
 
         if(!compte) {
             const error = new Error('email ou mot de passe incorrect');
@@ -95,7 +99,7 @@ db.connecter = async (req,res,next) => {
         }
 
         const token = jwt.sign({
-            email,
+            id:compte.get('idCompte'),
         },process.env.JWT_SECRET,{
             expiresIn: '7d'
         });
@@ -129,7 +133,11 @@ db.verefier = async (req,res,next) => {
             return next(error);
         }
 
-        const compte = await Compte.findByPk(email);
+        const compte = await Compte.findOne({
+            where: {
+                email:email
+            }
+        });
 
         if(!compte) {
             const error = new Error('utilisateur non trouvé');
@@ -164,12 +172,12 @@ db.recuperer = async (req,res,next) => {
             return next(error);
         }
 
-        const token = jwt.sign({
+        /*const token = jwt.sign({
             email:to,
             type:'RESET'
         },process.env.JWT_SECRET,{
             expiresIn: '1h'
-        });
+        });*/
 
         await sendResetPasswordEmail(email);
 
@@ -197,7 +205,11 @@ db.reinitialiser = async (req,res,next) => {
             return next(error);
         }
 
-        const compte = await Compte.findByPk(email);
+        const compte = await Compte.findOne({
+            where: {
+                email:email
+            }
+        });
 
         if(!compte) {
             const error = new Error('utilisateur non trouvé');

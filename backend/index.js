@@ -40,8 +40,10 @@ const errorHandler = (err,req,res,next) => {
 // routers
 
 const authRouter = require('./routes/auth');
+const adminRouter = require('./routes/admin');
 
 app.use('/v1/auth/', authRouter);
+app.use('/v1/admin/', adminRouter);
 app.get('/', (req,res,next) => res.send('hi'));
 
 // use the error handler
