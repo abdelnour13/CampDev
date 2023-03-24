@@ -8,10 +8,12 @@ const checkForValidationErrors = require('../middlewares/checkForValidationError
 const {
     createAccount
 } = require('../controllers/admin');
+const haveRole = require('../middlewares/haveRole');
 
 router.post('/',
     upload.single('photo'),
-    /*checkAuthenticated,*/
+    checkAuthenticated,
+    haveRole('ADMIN'),
     body('nom')
         .exists().withMessage('le nom est un attribut obligatoire')
         .isAlpha().withMessage('le nom ne doit contenir que des lettres')
