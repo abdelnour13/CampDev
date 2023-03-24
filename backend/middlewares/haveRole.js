@@ -1,4 +1,4 @@
-
+const httpStatus = require('http-status');
 
 module.exports = (role) => {
     return (req,res,next) => {
